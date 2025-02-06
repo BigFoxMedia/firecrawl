@@ -2,15 +2,18 @@ FROM node:20-slim AS base
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 LABEL fly_launch_runtime="Node.js"
+RUN npm i -g corepack@latest
 RUN corepack enable
+RUN pnpm i -g corepack@latest
+# RUN npm install -g pnpm@8.15.5
 COPY . /app
 WORKDIR /app
 
 FROM base AS prod-deps
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --prod --frozen-lockfile
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --prod 
 
 FROM base AS build
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install 
 
 RUN apt-get update -qq && apt-get install -y ca-certificates && update-ca-certificates
 RUN pnpm install
