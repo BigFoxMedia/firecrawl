@@ -111,6 +111,14 @@ curl -X POST http://localhost:3002/v1/crawl \
     }'
 ```
 
+
+### Terminal 4 - If using Playwright or PlaywrightTS - Run these now.
+Navigate to the appropriate repo and run it. If TS, use:
+```bash
+docker compose up
+```
+This will launch the dev variant of playWright on localhost:3000
+
 ### Alternative: Using Docker Compose
 
 For a simpler setup, you can use Docker Compose to run all services:

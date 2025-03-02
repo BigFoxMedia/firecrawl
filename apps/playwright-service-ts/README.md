@@ -14,6 +14,7 @@ This is a simple web scraping service built with Express and Playwright.
 ```bash
 npm install
 npx playwright install
+`` Try: npx playwright install --force --with-deps
 ```
 
 ## RUN

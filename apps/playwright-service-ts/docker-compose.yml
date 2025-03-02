@@ -1,0 +1,14 @@
+version: '3'
+services:
+  playwright-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: playwright-dev
+    ports:
+      - "3003:3003"
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    environment:
+      - NODE_ENV=development
