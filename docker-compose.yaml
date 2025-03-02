@@ -4,12 +4,16 @@ x-common-service: &common-service
   build: apps/api
   networks:
     - backend
+    - proxyRelayNet
   extra_hosts:
     - "host.docker.internal:host-gateway"
 
 services:
   playwright-service:
     build: apps/playwright-service
+    container_name: playwright-service
+    ports:
+      - 3000:3000
     environment:
       - PORT=3000
       - PROXY_SERVER=${PROXY_SERVER}
@@ -18,6 +22,8 @@ services:
       - BLOCK_MEDIA=${BLOCK_MEDIA}
     networks:
       - backend
+      - proxyRelayNet
+    restart: unless-stopped
 
   api:
     <<: *common-service
@@ -51,6 +57,7 @@ services:
       - playwright-service
     ports:
       - "3002:3002"
+    restart: unless-stopped
     command: [ "pnpm", "run", "start:production" ]
 
   worker:
@@ -84,14 +91,21 @@ services:
       - redis
       - playwright-service
       - api
+    restart: unless-stopped
     command: [ "pnpm", "run", "workers" ]
 
   redis:
     image: redis:alpine
+    container_name: redis
+    ports:
+      - 6379:6379
     networks:
       - backend
+    restart: unless-stopped
     command: redis-server --bind 0.0.0.0
 
 networks:
   backend:
     driver: bridge
+  proxyRelayNet:
+    external: true
