@@ -25,10 +25,10 @@ export async function scrapeURLWithPlaywright(
       method: "POST",
       logger: meta.logger.child("scrapeURLWithPlaywright/robustFetch"),
       schema: z.object({
-        content: z.string(),
-        pageStatusCode: z.number(),
-        pageError: z.string().optional(),
-      }),
+				content: z.string(),
+				pageStatusCode: z.number(),
+				pageError: z.string().nullable().optional(),
+			}),			
       mock: meta.mock,
     }),
     (async () => {
@@ -40,10 +40,11 @@ export async function scrapeURLWithPlaywright(
     })(),
   ]);
 
-  return {
-    url: meta.url, // TODO: impove redirect following
-    html: response.content,
-    statusCode: response.pageStatusCode,
-    error: response.pageError,
-  };
+	return {
+		url: meta.url, // TODO: improve redirect following
+		html: response.content,
+		statusCode: response.pageStatusCode,
+		error: response.pageError ?? undefined, // if null, becomes undefined
+	};
+	
 }
