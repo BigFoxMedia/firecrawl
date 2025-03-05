@@ -40,3 +40,5 @@ apps/js-sdk/firecrawl/dist
 .vscode
 llm-links.txt
 mapped-links.txt
+
+apps/playwright-service-ts/core

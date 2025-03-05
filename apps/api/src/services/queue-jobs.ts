@@ -21,6 +21,12 @@ async function _addScrapeJobToConcurrencyQueue(
   jobId: string,
   jobPriority: number,
 ) {
+
+	console.log("addScrapeJobRaw | _addScrapeJobToConcurrencyQueue: ", webScraperOptions);
+	console.log("addScrapeJobRaw | _addScrapeJobToConcurrencyQueue: ", options);
+	console.log("addScrapeJobRaw | _addScrapeJobToConcurrencyQueue: ", jobId);
+	console.log("addScrapeJobRaw | _addScrapeJobToConcurrencyQueue: ", jobPriority);
+
   await pushConcurrencyLimitedJob(webScraperOptions.team_id, {
     id: jobId,
     data: webScraperOptions,
@@ -72,6 +78,11 @@ async function addScrapeJobRaw(
   let currentActiveConcurrency = 0;
   let maxConcurrency = 0;
 
+	console.log("addScrapeJobRaw | webScraperOptions: ", webScraperOptions);
+	console.log("addScrapeJobRaw | options: ", options);
+	console.log("addScrapeJobRaw | jobId: ", jobId);
+	console.log("addScrapeJobRaw | jobPriority: ", jobPriority);
+
   if (
     webScraperOptions &&
     webScraperOptions.team_id
@@ -84,6 +95,10 @@ async function addScrapeJobRaw(
   }
 
   const concurrencyQueueJobs = await getConcurrencyQueueJobsCount(webScraperOptions.team_id);
+
+	console.log("addScrapeJobRaw | maxConcurrency: ", maxConcurrency);
+	console.log("addScrapeJobRaw | concurrencyQueueJobs: ", concurrencyQueueJobs);
+	console.log("addScrapeJobRaw | concurrencyLimited: ", concurrencyLimited);
 
   if (concurrencyLimited) {
     // Detect if they hit their concurrent limit
@@ -113,6 +128,12 @@ export async function addScrapeJob(
   jobId: string = uuidv4(),
   jobPriority: number = 10,
 ) {
+
+	console.log("addScrapeJob | webScraperOptions: ", webScraperOptions);
+	console.log("addScrapeJob | options: ", options);
+	console.log("addScrapeJob | jobId: ", jobId);
+	console.log("addScrapeJob | jobPriority: ", jobPriority);
+
   if (Sentry.isInitialized()) {
     const size = JSON.stringify(webScraperOptions).length;
     return await Sentry.startSpan(
